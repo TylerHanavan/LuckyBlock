@@ -1,0 +1,9 @@
+name: LuckyBlock
+author: pazzword
+depends: PazzwordAPI
+version: 0.1
+main: com.LuckyBlock.plugin.Core
+commands:
+    luckyblock:
+        description: Access the LuckyBlock commands
+        usage: /luckyblock
