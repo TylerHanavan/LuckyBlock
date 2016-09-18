@@ -31,13 +31,13 @@ public class Core extends JavaPlugin {
 	
 	private Random random = new Random();
 	
-	private ItemStack luckyBlock = null;
+	public ItemStack luckyBlock = null;
 	
 	public static boolean DEBUG = false;
 	
 	private HashMap<Material, Integer> blocks = new HashMap<Material, Integer>();
 	
-	private List<Material> blockList = new ArrayList<Material>();
+	public List<Material> blockList = new ArrayList<Material>();
 
 	@Override
 	public void onEnable() {
@@ -45,6 +45,7 @@ public class Core extends JavaPlugin {
 		this.blockList.add(Material.STONE);
 		this.blockList.add(Material.DIAMOND_ORE);
 		this.blockList.add(Material.GOLD_ORE);
+		this.blockList.add(Material.COAL_ORE);
 		this.blockList.add(Material.IRON_ORE);
 		this.blockList.add(Material.LAPIS_ORE);
 		this.blockList.add(Material.REDSTONE_ORE);
@@ -80,14 +81,44 @@ public class Core extends JavaPlugin {
 		
 		this.getCommand("luckyblock").setExecutor(new Commands(this));
 		
-		
-		
 	}
 	
 	@Override
 	public void onDisable() {
 		
 		
+	}
+	
+	public ItemStack getLuckyBlock(Material type) {
+		
+		ItemStack item = this.luckyBlock;
+		
+		if(this.blocks.containsKey(type) && this.blocks.size() > 0) {
+		
+			int chance = this.blocks.get(type);
+			
+			if(chance > 0) {
+				
+				if(getRandomInt(0, 100) < chance)
+					return item;
+				
+			}
+		
+		}
+		
+		return null;
+		
+	}
+	
+	public void addBlocks() {
+		
+		for(Material material : this.blockList) {
+			
+			this.yaml.set("blocks." + material.name(), 10);
+			
+		}
+		
+		this.yaml.save();
 		
 	}
 	
@@ -166,6 +197,11 @@ public class Core extends JavaPlugin {
 		}
 		
 	}
+
+	public ItemStack getRandomItem() {
+
+		return this.items.get(this.getRandomInt(0, this.items.size() - 1));
+	}
 	
 	public int getRandomInt(int min, int max) {
 
@@ -186,7 +222,39 @@ public class Core extends JavaPlugin {
 		
 		ConfigurationSection section = yaml.getConfigurationSection("items");
 		
+		if(section != null) {
+			
+			for(String s : section.getKeys(false)) {
+				
+				this.items.add(this.yaml.getItemStack("items." + s, -1));
+				
+				this.top = section.getInt(s + ".id_");
+				
+			}
+			
+		}
 		
+		section = this.yaml.getConfigurationSection("blocks");
+		
+		if(section == null) {
+			
+			this.addBlocks();
+			
+		}
+		
+		section = this.yaml.getConfigurationSection("blocks");
+		
+		Set<String> set = section.getKeys(false);
+		
+		if(set != null) {
+			
+			for(String s : set) {
+				
+				this.blocks.put(Material.getMaterial(s), section.getInt(s));
+				
+			}
+			
+		}
 		
 		this.yaml.save();
 		

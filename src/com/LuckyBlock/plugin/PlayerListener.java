@@ -34,9 +34,9 @@ public class PlayerListener implements Listener {
 		
 		if(player.getGameMode().equals(GameMode.SURVIVAL) && !event.isCancelled()) {
 			
-			ItemStack item = this.core.getRandomItem();
+			ItemStack item = this.core.getLuckyBlock(event.getBlock().getType());
 			
-			if(item != null && this.blocks.contains(event.getBlock().getType())) {
+			if(item != null && this.core.blockList.contains(event.getBlock().getType())) {
 				
 				this.core.getServer().getScheduler().scheduleSyncDelayedTask(this.core, new Runnable() {
 
@@ -64,7 +64,7 @@ public class PlayerListener implements Listener {
 			
 			ItemStack item = event.getItemInHand();
 			
-			ItemStack drop = this.core.fromLuckyToReward(item);
+			ItemStack drop = this.core.getRandomItem();
 			
 			if(drop != null && skull.getOwner().equalsIgnoreCase("Luck")) {
 				event.getBlock().getWorld().dropItem(event.getBlock().getLocation(), drop);
