@@ -60,26 +60,25 @@ public class PlayerListener implements Listener {
 		
 		if(event.getBlockPlaced().getType() == Material.SKULL && !event.isCancelled()) {
 			
-			Skull skull = (Skull) event.getBlockPlaced().getState();
-			
-			ItemStack item = event.getItemInHand();
-			
 			ItemStack drop = this.core.getRandomItem();
 			
-			if(drop != null && skull.getOwner().equalsIgnoreCase("Luck")) {
-				event.getBlock().getWorld().dropItem(event.getBlock().getLocation(), drop);
-				this.core.getServer().getScheduler().scheduleSyncDelayedTask(this.core, new Runnable() {
-
-					@Override
-					public void run() {
+			this.core.getServer().getScheduler().scheduleSyncDelayedTask(this.core, new Runnable() {
+				
+				@Override
+				public void run() {
+			
+					Skull skull = (Skull) event.getBlockPlaced().getState();
+					
+					if(drop != null && skull != null && skull.getOwner() != null &&  skull.getOwner().equalsIgnoreCase("Luck")) {
+						event.getBlock().getWorld().dropItem(event.getBlock().getLocation(), drop);
 						
 						event.getBlock().setType(Material.AIR);
 						
 					}
-					
-				}, 5L);
-			}
+			
+				}
 				
+			}, 30L);
 			
 		}
 		

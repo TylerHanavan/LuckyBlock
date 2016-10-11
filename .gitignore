@@ -48,3 +48,5 @@ Temporary Items
 .classpath
 .project
 .settings/org.eclipse.jdt.core.prefs
+*.class
+bin/com/LuckyBlock/plugin/PlayerListener.class
