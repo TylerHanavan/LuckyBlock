@@ -50,3 +50,6 @@ Temporary Items
 .settings/org.eclipse.jdt.core.prefs
 *.class
 bin/com/LuckyBlock/plugin/PlayerListener.class
+bin/com/LuckyBlock/plugin/Core.class
+*.class
+bin/com/LuckyBlock/plugin/PlayerListener.class
